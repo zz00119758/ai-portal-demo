@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
@@ -11985,6 +11985,43 @@
       font-size: 14px;
     }
 
+    .portal2-recent-filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 24px 10px;
+      padding: 4px;
+      border: 1px solid #e5edf8;
+      border-radius: 999px;
+      background: #f8fbff;
+      width: max-content;
+      max-width: calc(100% - 48px);
+    }
+
+    .portal2-recent-filter button {
+      height: 28px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 999px;
+      color: #667085;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .portal2-recent-filter button:hover {
+      color: #2563eb;
+      background: rgba(37, 99, 235, .07);
+    }
+
+    .portal2-recent-filter button.active {
+      color: #2563eb;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, .10);
+    }
+
     .portal2-dialog-list {
       display: grid;
       gap: 10px;
@@ -12008,6 +12045,30 @@
     .portal2-recent-dialog .portal2-recent-main strong {
       font-size: 14px;
       line-height: 1.25;
+    }
+
+    .portal2-recent-dialog .portal2-recent-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .portal2-task-trigger-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 999px;
+      color: #7c3aed;
+      background: rgba(124, 58, 237, .10);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .portal2-recent-dialog .portal2-recent-item.task-triggered {
+      border-color: rgba(124, 58, 237, .16);
+      background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(250, 247, 255, .82));
     }
 
     .portal2-recent-dialog .portal2-recent-side {
@@ -13690,7 +13751,7 @@
         <div class="brand-mark"><img src="assets/meixiaoxin-avatar.png" alt="煤小芯头像"></div>
         <div>
           <strong>煤小芯</strong>
-          <span>您的智能总控助手</span>
+          <span>您的智能调度助手</span>
         </div>
       </div>
 
@@ -13851,7 +13912,7 @@
               <p class="portal2-intro">我可以为您理解需求、智能分析、生成方案、执行任务，助力您更高效地完成工作。</p>
             </div>
             <div class="portal2-hero-bubble" aria-hidden="true">
-              <strong>我是煤小芯，您的总控助手</strong>
+            <strong>我是煤小芯，您的调度助手</strong>
               <span>统一承接 · 智能分流 · 高效协同</span>
             </div>
           </section>
@@ -13860,7 +13921,7 @@
             <div class="portal2-assistant-row">
               <div class="portal2-current-helper">
                 <img class="portal2-mini-avatar" src="assets/meixiaoxin-avatar.png" alt="煤小芯">
-                <span>当前助手：<b>煤小芯（总控助手）</b></span>
+            <span>当前助手：<b>煤小芯（调度助手）</b></span>
                 <button class="portal2-switch" type="button" data-portal2-menu-trigger="employees">⇄ 切换数智员工</button>
                 <div class="selector-menu portal2-selector-menu" data-portal2-menu="employees">
                   <div class="menu-title">推荐数智员工</div>
@@ -13937,7 +13998,7 @@
             <article class="portal2-panel">
               <div class="portal2-panel-head">
                 <h3>常用AI工具</h3>
-                <button class="portal2-view-all" type="button" data-portal2-view="apps">更多应用 ›</button>
+              <button class="portal2-view-all" type="button" data-portal2-view="apps">更多工具 ›</button>
               </div>
               <div class="portal2-quick-apps">
                 <button class="portal2-app-tile" type="button" data-portal2-new="true" data-portal2-prompt="请帮我审查采购文件，重点检查完整性、规范性和评审标准。"><span>审</span><strong>采购文件审查</strong></button>
@@ -13971,6 +14032,11 @@
             <span>⌕</span>
             <input id="portal2RecentSearch" type="search" placeholder="搜索最近对话...">
           </label>
+          <div class="portal2-recent-filter" role="group" aria-label="历史会话筛选">
+            <button class="active" type="button" data-portal2-recent-filter="all">全部</button>
+          <button type="button" data-portal2-recent-filter="manual">对话历史</button>
+          <button type="button" data-portal2-recent-filter="task">定时任务历史</button>
+          </div>
           <div class="portal2-dialog-list" id="portal2RecentDialogList"></div>
         </section>
       </div>
@@ -14723,7 +14789,6 @@
           <div class="task-footer">
             <div class="task-left">
               <span>启用任务 <span class="switch"></span></span>
-              <button type="button" data-action="测试预览">⊙ 测试预览</button>
             </div>
             <div class="task-buttons">
               <button class="ghost-btn" type="button" data-action="取消创建任务">取消</button>
@@ -15162,50 +15227,46 @@
       <button class="history-tab" type="button" data-history-tab="task">定时任务历史</button>
     </div>
     <div class="history-panel active" id="historyPanelChat">
-      <div class="history-group-title">今天</div>
       <button class="history-card" type="button" data-chat="采购绩效分析报告">
         <span class="history-card-icon">文</span>
-        <span><strong>采购绩效分析报告</strong><small>10:42 · 已生成指标解读和异常说明</small></span>
+        <span><strong>采购绩效分析报告</strong><small>10:42</small></span>
         <span>→</span>
       </button>
       <button class="history-card" type="button" data-chat="供应商优化方案可行性分析">
         <span class="history-card-icon">析</span>
-        <span><strong>供应商优化方案可行性分析</strong><small>09:18 · 由采购数据运营分析助手处理</small></span>
+        <span><strong>供应商优化方案可行性分析</strong><small>09:18</small></span>
         <span>→</span>
       </button>
-      <div class="history-group-title">7天内</div>
       <button class="history-card" type="button" data-chat="设备巡检进度说明">
         <span class="history-card-icon">巡</span>
-        <span><strong>设备巡检进度说明</strong><small>昨天 · 汇总完成 3 条待确认事项</small></span>
+        <span><strong>设备巡检进度说明</strong><small>昨天</small></span>
         <span>→</span>
       </button>
       <button class="history-card" type="button" data-chat="公司2025年6月份采购周报">
         <span class="history-card-icon">报</span>
-        <span><strong>公司2025年6月份采购周报</strong><small>周一 · 已回填到输入框继续完善</small></span>
+        <span><strong>公司2025年6月份采购周报</strong><small>周一</small></span>
         <span>→</span>
       </button>
     </div>
     <div class="history-panel" id="historyPanelTask">
-      <div class="history-group-title">消息提醒</div>
-      <button class="history-card" type="button" data-task-shortcut="采购周报生成">
+      <button class="history-card" type="button" data-task-shortcut="采购周报生成" data-unread="true">
         <span class="history-card-icon">!</span>
-        <span><strong>采购周报生成</strong><small>本周一 10:00 · 待补充 1 个合同附件</small></span>
+        <span><strong>采购周报生成</strong><small>本周一 10:00</small></span>
         <span class="history-status warn">待处理</span>
       </button>
-      <button class="history-card" type="button" data-task-shortcut="供应商资质提醒">
+      <button class="history-card" type="button" data-task-shortcut="供应商资质提醒" data-unread="true">
         <span class="history-card-icon">资</span>
-        <span><strong>供应商资质提醒</strong><small>本月 1 日 09:30 · 3 家供应商证照即将到期</small></span>
+        <span><strong>供应商资质提醒</strong><small>本月 1 日 09:30</small></span>
         <span class="history-status warn">提醒</span>
       </button>
-      <div class="history-group-title">运行历史</div>
       <button class="history-card" type="button" data-task-shortcut="每日销售数据汇总">
         <span class="history-card-icon">✓</span>
-        <span><strong>每日销售数据汇总</strong><small>今日 09:00 · 已生成日报，发现 2 条异常波动</small></span>
+        <span><strong>每日销售数据汇总</strong><small>今日 09:00</small></span>
         <span class="history-status">成功</span>
       </button>
       <button class="history-card" type="button" data-task-shortcut="采购周报生成">
         <span class="history-card-icon">✓</span>
-        <span><strong>采购周报生成</strong><small>上周一 10:00 · 已完成周报并归档到知识库</small></span>
+        <span><strong>采购周报生成</strong><small>上周一 10:00</small></span>
         <span class="history-status">成功</span>
       </button>
     </div>
@@ -15307,7 +15368,7 @@
       if (assistantSubTitle) {
         assistantSubTitle.textContent = isEmployee
           ? "由煤小芯分配 · 数智员工对话中"
-          : "煤小芯总控 · 智能协同入口";
+          : "煤小芯调度 · 智能协同入口";
       }
       if (assistantEmployeeTool) {
         assistantEmployeeTool.textContent = isEmployee ? "@" + assistantConversationTarget : "@ 数智员工";
@@ -16332,9 +16393,9 @@
         name: "煤小芯",
         title: "您好，有什么可以帮您？",
         intro: "我可以为您理解需求、智能分析、生成方案、执行任务，助力您更高效地完成工作。",
-        bubbleTitle: "我是煤小芯，您的总控助手",
+        bubbleTitle: "我是煤小芯，您的调度助手",
         bubbleText: "统一承接 · 智能分流 · 高效协同",
-        helperText: "煤小芯（总控助手）",
+        helperText: "煤小芯（调度助手）",
         placeholder: "请输入您的问题，不清楚找谁可直接问煤小芯；也可 @数字员工 / @技能...",
         miniAvatar: `<img class="portal2-mini-avatar" src="assets/meixiaoxin-avatar.png" alt="煤小芯">`,
         heroAvatar: `<img src="assets/meixiaoxin-hero-wave.png?v=20260602c" alt="煤小芯">`,
@@ -16589,16 +16650,17 @@
       { title: "采购文件审查", owner: "煤小芯", time: "10:24", desc: "请帮我审查这份采购文件，重点检查完整性、规范性和评审标准。" },
       { title: "供应商资质核验", owner: "供应商管理数字员工", time: "09:58", desc: "核验供应商证照有效期、资质范围和风险条件。" },
       { title: "制作汇报PPT", owner: "煤小芯", time: "09:30", desc: "根据采购分析材料生成汇报结构和页面要点。" },
-      { title: "合同履约分析报告", owner: "合同数字员工", time: "06-09", desc: "汇总合同履约、到货验收和付款节点，识别异常事项。" },
+      { title: "合同履约分析报告", owner: "合同数字员工", time: "06-09", desc: "汇总合同履约、到货验收和付款节点，识别异常事项。", trigger: "task" },
       { title: "供应商绩效评估方案", owner: "供应商管理数字员工", time: "06-07", desc: "生成供应商绩效评估维度和评分建议。" },
-      { title: "采购周报生成", owner: "采购数字员工", time: "06-05", desc: "汇总本周采购执行、合同履约和供应商表现。" },
+      { title: "采购周报生成", owner: "采购数字员工", time: "06-05", desc: "汇总本周采购执行、合同履约和供应商表现。", trigger: "task" },
       { title: "物料审批口径确认", owner: "物流运营数字员工", time: "06-03", desc: "确认物料新增、变更和停用审批规则。" }
     ];
 
     function portal2RecentItemHtml(item) {
+      const isTask = item.trigger === "task";
       return `
-        <button class="portal2-recent-item" type="button" data-portal2-recent-item="${escapeHtml(item.title)}">
-          <span class="portal2-recent-main"><strong>${escapeHtml(item.title)}</strong></span>
+        <button class="portal2-recent-item ${isTask ? "task-triggered" : ""}" type="button" data-portal2-recent-item="${escapeHtml(item.title)}" data-recent-trigger="${isTask ? "task" : "manual"}">
+          <span class="portal2-recent-main"><strong>${escapeHtml(item.title)}</strong>${isTask ? '<span class="portal2-task-trigger-badge">定时任务</span>' : ""}</span>
           <span class="portal2-recent-side"><span class="portal2-source-badge">${escapeHtml(item.owner)}</span><span>· ${escapeHtml(item.time)}</span></span>
           <span class="portal2-recent-arrow">›</span>
         </button>
@@ -16609,9 +16671,12 @@
       const list = document.querySelector("#portal2RecentDialogList");
       if (!list) return;
       const query = keyword.trim().toLowerCase();
+      const activeFilter = document.querySelector("[data-portal2-recent-filter].active")?.dataset.portal2RecentFilter || "all";
       const items = portal2RecentItems.filter((item) => {
-        const text = `${item.title} ${item.owner} ${item.desc}`.toLowerCase();
-        return !query || text.includes(query);
+        const trigger = item.trigger === "task" ? "task" : "manual";
+      const text = `${item.title} ${item.owner} ${item.desc} ${trigger === "task" ? "定时任务历史" : "对话历史"}`.toLowerCase();
+        const matchesFilter = activeFilter === "all" || activeFilter === trigger;
+        return matchesFilter && (!query || text.includes(query));
       });
       list.innerHTML = items.length
         ? items.map(portal2RecentItemHtml).join("")
@@ -16623,6 +16688,7 @@
       const input = document.querySelector("#portal2RecentSearch");
       if (!dialog || !input) return;
       input.value = "";
+      document.querySelectorAll("[data-portal2-recent-filter]").forEach((button) => button.classList.toggle("active", button.dataset.portal2RecentFilter === "all"));
       renderPortal2RecentDialog();
       dialog.hidden = false;
       setTimeout(() => input.focus(), 30);
@@ -16643,6 +16709,13 @@
       if (event.target.closest("[data-portal2-recent-open]")) {
         event.preventDefault();
         openPortal2RecentDialog();
+        return;
+      }
+      const filterButton = event.target.closest("[data-portal2-recent-filter]");
+      if (filterButton) {
+        event.preventDefault();
+        document.querySelectorAll("[data-portal2-recent-filter]").forEach((button) => button.classList.toggle("active", button === filterButton));
+        renderPortal2RecentDialog(document.querySelector("#portal2RecentSearch")?.value || "");
         return;
       }
       if (event.target.closest("[data-portal2-recent-close]") || event.target.id === "portal2RecentDialog") {
@@ -19316,7 +19389,7 @@
       `).join("");
       return `
         <div class="portal2-ability-menu-head">
-          <span>选择能力</span>
+          <span>选择技能</span>
           <small>Skill · MCP · 工作流</small>
         </div>
         <div class="portal2-ability-menu-list">${options}</div>
@@ -26561,7 +26634,7 @@
       function decorateCards(root = document) {
         if (!isPortal2()) return;
         root.querySelectorAll("#page-portal2 .portal2-hero-bubble strong, #page-portal2 .portal2-current-helper b").forEach((node) => {
-          node.textContent = node.textContent.replace("总控助手", "智能调度官");
+          node.textContent = node.textContent.replace("总控助手", "调度助手");
         });
         root.querySelectorAll("#page-portal2 .portal2-panel-head h3").forEach((node) => {
           if (node.textContent.trim() === "常用应用") node.textContent = "常用AI工具";
@@ -30916,7 +30989,7 @@
     color: #2f6fec !important;
     font-size: 12px !important;
     font-style: normal !important;
-    font-weight: 800 !important;
+    font-weight: 500 !important;
     white-space: nowrap !important;
   }
 
@@ -32151,7 +32224,6 @@
 (() => {
   const storageKey = "codex-chat-open-tabs-20260729";
   const collapsedStorageKey = "codex-chat-tabs-collapsed-20260729";
-  const defaultStatus = "进行中";
   let tabs = [];
   let activeTitle = "";
   let tabsCollapsed = false;
@@ -32175,6 +32247,18 @@
     return cleanTitle(document.querySelector("#page-chat #sessionTitle")?.textContent || "");
   }
 
+  function isScheduledTaskTab(title) {
+    const clean = cleanTitle(title);
+    if (!clean) return false;
+    try {
+      const recent = document.querySelector(`[data-portal2-recent-item="${CSS.escape(clean)}"]`);
+      if (recent?.dataset?.recentTrigger === "task" || recent?.classList?.contains("task-triggered")) return true;
+    } catch {
+      /* CSS.escape may fail for unusual titles; fall through to title rules */
+    }
+    return /定时任务|运行结果|每日销售数据汇总|采购周报生成|供应商资质提醒|合同履约分析报告/.test(clean);
+  }
+
   function loadTabs() {
     try {
       const parsed = JSON.parse(sessionStorage.getItem(storageKey) || "[]");
@@ -32188,7 +32272,7 @@
 
   function saveTabs() {
     try {
-      sessionStorage.setItem(storageKey, JSON.stringify(tabs.slice(0, 12)));
+      sessionStorage.setItem(storageKey, JSON.stringify(tabs.slice(0, 24)));
     } catch {
       /* sessionStorage may be unavailable in embedded previews */
     }
@@ -32225,9 +32309,8 @@
   function addTab(title, options = {}) {
     const clean = cleanTitle(title);
     if (!clean || clean === "新对话") return;
-    tabs = tabs.filter((item) => item !== clean);
-    tabs.push(clean);
-    if (tabs.length > 8) tabs = tabs.slice(-8);
+    if (!tabs.includes(clean)) tabs.push(clean);
+    if (tabs.length > 24) tabs = tabs.slice(-24);
     if (options.activate !== false) activeTitle = clean;
     saveTabs();
     renderTabs();
@@ -32355,14 +32438,16 @@
     if (!bar) return;
     const strip = bar.querySelector(".codex-chat-tabstrip");
     if (!strip) return;
+    const previousScrollLeft = strip.scrollLeft;
     const current = activeTitle || getSessionTitle();
     const tabHtml = tabs.map((title) => {
       const active = title === current || title === activeTitle;
+      const taskStatus = isScheduledTaskTab(title) ? `<span class="codex-chat-tab-state codex-chat-tab-state-task">定时任务</span>` : "";
       return `
-        <button class="codex-chat-tab ${active ? "active" : ""}" type="button" role="tab" aria-selected="${active ? "true" : "false"}" data-codex-chat-tab="${escapeHtmlLocal(title)}" title="${escapeHtmlLocal(title)}">
+        <button class="codex-chat-tab ${active ? "active" : ""}" type="button" role="tab" aria-selected="${active ? "true" : "false"}" draggable="true" aria-grabbed="false" data-codex-chat-tab="${escapeHtmlLocal(title)}" title="${escapeHtmlLocal(title)}">
           <span class="codex-chat-tab-main">
             <span class="codex-chat-tab-title">${escapeHtmlLocal(title)}</span>
-            <span class="codex-chat-tab-state">${defaultStatus}</span>
+            ${taskStatus}
           </span>
           <span class="codex-chat-tab-close" data-codex-close-tab="${escapeHtmlLocal(title)}" aria-label="关闭">×</span>
         </button>
@@ -32370,8 +32455,7 @@
     }).join("");
     strip.innerHTML = `${tabHtml}<button class="codex-chat-new" type="button" data-codex-new-chat>+新对话</button>`;
     applyCollapsedState();
-    const activeNode = strip.querySelector(".codex-chat-tab.active");
-    if (!tabsCollapsed) activeNode?.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "nearest" });
+    strip.scrollLeft = previousScrollLeft;
   }
 
   function scheduleRenderFromSession() {
@@ -32388,6 +32472,8 @@
     loadTabs();
     ensureTabbar();
     renderTabs();
+    let draggingTitle = "";
+    let justDragged = false;
 
     document.addEventListener("click", (event) => {
       const close = event.target.closest("[data-codex-close-tab]");
@@ -32400,6 +32486,10 @@
       const tab = event.target.closest("[data-codex-chat-tab]");
       if (tab) {
         event.preventDefault();
+        if (justDragged) {
+          event.stopPropagation();
+          return;
+        }
         openTitle(tab.dataset.codexChatTab);
         return;
       }
@@ -32439,6 +32529,65 @@
         toggleHistoryRail();
       }
     }, true);
+
+    document.addEventListener("dragstart", (event) => {
+      const tab = event.target.closest?.("#page-chat [data-codex-chat-tab]");
+      if (!tab || event.target.closest?.("[data-codex-close-tab]")) return;
+      draggingTitle = cleanTitle(tab.dataset.codexChatTab);
+      tab.classList.add("codex-tab-dragging");
+      tab.setAttribute("aria-grabbed", "true");
+      if (event.dataTransfer) {
+        event.dataTransfer.effectAllowed = "move";
+        event.dataTransfer.setData("text/plain", draggingTitle);
+      }
+    }, true);
+
+    document.addEventListener("dragover", (event) => {
+      const strip = event.target.closest?.("#page-chat .codex-chat-tabstrip");
+      if (!strip || !draggingTitle) return;
+      event.preventDefault();
+      if (event.dataTransfer) event.dataTransfer.dropEffect = "move";
+    }, true);
+
+    document.addEventListener("drop", (event) => {
+      const target = event.target.closest?.("#page-chat [data-codex-chat-tab]");
+      if (!target || !draggingTitle) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const targetTitle = cleanTitle(target.dataset.codexChatTab);
+      const from = tabs.indexOf(draggingTitle);
+      const to = tabs.indexOf(targetTitle);
+      if (from !== -1 && to !== -1 && from !== to) {
+        const [moved] = tabs.splice(from, 1);
+        tabs.splice(to, 0, moved);
+        saveTabs();
+        renderTabs();
+        justDragged = true;
+        window.setTimeout(() => { justDragged = false; }, 220);
+      }
+      draggingTitle = "";
+    }, true);
+
+    document.addEventListener("dragend", () => {
+      document.querySelectorAll("#page-chat .codex-tab-dragging").forEach((item) => {
+        item.classList.remove("codex-tab-dragging");
+        item.setAttribute("aria-grabbed", "false");
+      });
+      if (draggingTitle) {
+        justDragged = true;
+        window.setTimeout(() => { justDragged = false; }, 220);
+      }
+      draggingTitle = "";
+    }, true);
+
+    document.addEventListener("wheel", (event) => {
+      const strip = event.target.closest?.("#page-chat .codex-chat-tabstrip");
+      if (!strip || strip.closest(".tabs-collapsed")) return;
+      if (strip.scrollWidth <= strip.clientWidth) return;
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      strip.scrollLeft += event.deltaY;
+      event.preventDefault();
+    }, { passive: false, capture: true });
 
     const originalOpenConversation = window.openConversation;
     if (typeof originalOpenConversation === "function" && !originalOpenConversation.__codexTabbed) {
@@ -34327,5 +34476,1547 @@
   new MutationObserver(scheduleScan).observe(document.documentElement, { childList: true, subtree: true });
 })();
 </script>
+<style id="codex-chat-header-clean-final-20260803">
+  #page-chat .chat-workspace.in-session .chat-session.open,
+  .app.portal2-mode #page-chat .chat-workspace.in-session .chat-session.open,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .chat-session.open {
+    grid-template-rows: 76px minmax(0, 1fr) !important;
+  }
+
+  #page-chat .chat-workspace.in-session .session-head,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .session-head {
+    min-height: 76px !important;
+    padding: 0 !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  #page-chat .session-head > h2,
+  #page-chat .session-head > span {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    white-space: nowrap !important;
+  }
+
+  #page-chat .codex-chat-tabbar {
+    width: 100%;
+    height: 58px;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 14px !important;
+  }
+
+  #page-chat .codex-chat-tab-controls {
+    display: inline-flex !important;
+    align-items: center !important;
+    height: 58px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  #page-chat .codex-chat-back-home {
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 4px 0 0;
+    border: 0;
+    background: transparent;
+    color: #667085;
+    font-size: 15px;
+    font-weight: 850;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  #page-chat .codex-chat-back-home:hover {
+    color: #2563eb;
+  }
+
+  #page-chat .codex-chat-tabstrip {
+    min-width: 0;
+    height: 50px !important;
+    min-height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    padding: 4px 6px !important;
+    border: 1px solid rgba(226, 232, 240, .86);
+    border-radius: 16px;
+    background: rgba(248, 251, 255, .72);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .72);
+    scrollbar-width: none !important;
+    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 18px), transparent 100%);
+    mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 18px), transparent 100%);
+  }
+
+  #page-chat .codex-chat-tabstrip::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  #page-chat .codex-chat-tab {
+    height: 38px !important;
+    min-width: 152px !important;
+    max-width: 216px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 0 9px 0 12px !important;
+    border: 1px solid rgba(226, 232, 240, .9) !important;
+    border-radius: 12px !important;
+    background: rgba(255, 255, 255, .88) !important;
+    box-shadow: 0 4px 12px rgba(18, 33, 63, .035) !important;
+  }
+
+  #page-chat .codex-chat-tab:hover {
+    border-color: rgba(148, 163, 184, .52) !important;
+    background: #fff !important;
+    transform: none !important;
+  }
+
+  #page-chat .codex-chat-tab.active {
+    color: #2563eb !important;
+    border-color: rgba(37, 99, 235, .32) !important;
+    background: #fff !important;
+    box-shadow: 0 6px 16px rgba(37, 99, 235, .10) !important;
+  }
+
+  #page-chat .codex-chat-tab-state {
+    font-size: 12px !important;
+  }
+
+  #page-chat .codex-chat-tab-close {
+    color: #98a2b3 !important;
+  }
+
+  #page-chat .codex-chat-new {
+    height: 38px !important;
+    min-width: 88px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 12px !important;
+    border: 1px dashed rgba(37, 99, 235, .34) !important;
+    border-radius: 12px !important;
+    color: #2563eb !important;
+    background: rgba(255, 255, 255, .68) !important;
+    font-weight: 850 !important;
+  }
+
+  #page-chat .codex-chat-new:hover {
+    background: rgba(37, 99, 235, .07) !important;
+    transform: none !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle] {
+    display: none !important;
+  }
+
+  #page-chat .codex-chat-right-actions {
+    height: 58px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  #page-chat .codex-chat-history {
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    border: 1px solid rgba(226, 232, 240, .92) !important;
+    border-radius: 13px !important;
+    color: #64748b !important;
+    background: rgba(255, 255, 255, .84) !important;
+    box-shadow: 0 5px 14px rgba(18, 33, 63, .045) !important;
+    font-size: 0 !important;
+    cursor: pointer !important;
+  }
+
+  #page-chat .codex-chat-history::before {
+    content: "◷" !important;
+    display: inline-flex !important;
+    color: currentColor !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    transform: translateY(-.5px);
+  }
+
+  #page-chat .codex-chat-history:hover,
+  #page-chat .codex-chat-history.active {
+    color: #2563eb !important;
+    border-color: rgba(37, 99, 235, .22) !important;
+    background: rgba(37, 99, 235, .08) !important;
+  }
+</style>
+<script id="codex-chat-header-clean-final-20260803">
+(() => {
+  function cleanChatHeader() {
+    const bar = document.querySelector("#page-chat .codex-chat-tabbar");
+    if (!bar) return;
+    const controls = bar.querySelector(".codex-chat-tab-controls");
+    const strip = bar.querySelector(".codex-chat-tabstrip");
+    if (!controls || !strip) return;
+
+    let back = bar.querySelector("[data-codex-chat-back-menu]");
+    if (!back) {
+      back = document.createElement("button");
+      back.type = "button";
+      back.dataset.codexChatBackMenu = "true";
+      controls.prepend(back);
+    }
+    back.className = "codex-chat-back-home";
+    back.textContent = "← 首页";
+    back.setAttribute("title", "返回首页");
+    back.setAttribute("aria-label", "返回首页");
+    if (back.parentElement !== controls) controls.prepend(back);
+
+    let right = bar.querySelector(".codex-chat-right-actions");
+    if (!right) {
+      right = document.createElement("div");
+      right.className = "codex-chat-right-actions";
+      bar.appendChild(right);
+    }
+    right.hidden = false;
+
+    const history = bar.querySelector("[data-codex-history-toggle]");
+    if (history && history.parentElement !== right) right.appendChild(history);
+    if (history) {
+      history.textContent = "";
+      history.className = "codex-chat-history";
+      history.hidden = false;
+      history.setAttribute("title", "历史记录");
+      history.setAttribute("aria-label", "打开历史记录");
+    }
+
+    const toggle = bar.querySelector("[data-codex-tabs-toggle]");
+    if (toggle) {
+      if (toggle.parentElement !== right) right.insertBefore(toggle, history || null);
+      toggle.hidden = false;
+      toggle.removeAttribute("aria-hidden");
+      toggle.tabIndex = 0;
+      toggle.className = "codex-chat-tabs-toggle";
+      toggle.setAttribute("title", bar.classList.contains("tabs-collapsed") ? "展开页签" : "收起页签");
+    }
+  }
+
+  document.addEventListener("click", (event) => {
+    if (event.target.closest?.("[data-codex-chat-back-menu]")) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (typeof window.renderPortal2Module === "function") window.renderPortal2Module("home");
+      else if (typeof window.switchPage === "function") window.switchPage("portal2");
+      return;
+    }
+    window.setTimeout(cleanChatHeader, 30);
+    window.setTimeout(cleanChatHeader, 140);
+  }, true);
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", cleanChatHeader);
+  else cleanChatHeader();
+
+  new MutationObserver(() => {
+    window.clearTimeout(window.__codexChatHeaderCleanFinalTimer);
+    window.__codexChatHeaderCleanFinalTimer = window.setTimeout(cleanChatHeader, 40);
+  }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "hidden", "aria-hidden"] });
+})();
+</script>
+<style id="codex-chat-user-bubble-align-20260803">
+  #page-chat .message-list .chat-message.user,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list .chat-message.user {
+    padding-right: clamp(18px, 2.4vw, 42px) !important;
+    box-sizing: border-box !important;
+  }
+
+  #page-chat .message-list .chat-message.user .chat-bubble,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list .chat-message.user .chat-bubble {
+    margin-right: 0 !important;
+  }
+</style>
+<style id="codex-chat-final-ux-align-20260803">
+  #page-chat {
+    --codex-chat-content-width: min(1120px, calc(100vw - 96px));
+  }
+
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat {
+    --codex-chat-content-width: min(1120px, 100%);
+  }
+
+  #page-chat .chat-workspace.in-session .chat-session.open,
+  .app.portal2-mode #page-chat .chat-workspace.in-session .chat-session.open,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .chat-session.open {
+    grid-template-rows: 72px minmax(0, 1fr) !important;
+  }
+
+  #page-chat .chat-workspace.in-session .session-head,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .session-head {
+    min-height: 72px !important;
+    padding: 0 !important;
+  }
+
+  #page-chat .codex-chat-tabbar {
+    width: var(--codex-chat-content-width) !important;
+    max-width: 100% !important;
+    height: 56px !important;
+    margin: 0 auto !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) 42px !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  #page-chat .codex-chat-tab-controls {
+    height: 56px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  #page-chat .codex-chat-back-home {
+    height: 40px !important;
+    padding: 0 4px 0 0 !important;
+    color: #667085 !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    font-size: 15px !important;
+    font-weight: 850 !important;
+  }
+
+  #page-chat .codex-chat-tabstrip {
+    width: 100% !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 0 2px !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 20px), transparent 100%) !important;
+    mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 20px), transparent 100%) !important;
+  }
+
+  #page-chat .codex-chat-tabstrip::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  #page-chat .codex-chat-tab {
+    height: 42px !important;
+    min-width: 160px !important;
+    max-width: 224px !important;
+    border-radius: 12px !important;
+    background: rgba(255, 255, 255, .92) !important;
+    box-shadow: 0 5px 14px rgba(18, 33, 63, .045) !important;
+  }
+
+  #page-chat .codex-chat-tab.active {
+    background: #fff !important;
+    border-color: rgba(37, 99, 235, .34) !important;
+    box-shadow: 0 7px 18px rgba(37, 99, 235, .10) !important;
+  }
+
+  #page-chat .codex-chat-new {
+    height: 42px !important;
+    min-width: 92px !important;
+    background: rgba(255, 255, 255, .78) !important;
+  }
+
+  #page-chat .codex-chat-right-actions {
+    width: 42px !important;
+    height: 56px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+  }
+
+  #page-chat .codex-chat-history {
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    border: 1px solid rgba(226, 232, 240, .92) !important;
+    border-radius: 13px !important;
+    color: #64748b !important;
+    background: rgba(255, 255, 255, .86) !important;
+    box-shadow: 0 5px 14px rgba(18, 33, 63, .045) !important;
+    font-size: 0 !important;
+  }
+
+  #page-chat .codex-chat-history::before {
+    content: "◷" !important;
+    color: currentColor !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+
+  #page-chat .message-list {
+    padding: 18px 0 10px !important;
+  }
+
+  #page-chat .message-list .chat-message,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list .chat-message {
+    width: var(--codex-chat-content-width) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  #page-chat .message-list .chat-message.user {
+    justify-content: flex-end !important;
+  }
+
+  #page-chat .message-list .chat-message.assistant {
+    justify-content: flex-start !important;
+  }
+
+  #page-chat .message-list .chat-bubble {
+    max-width: min(760px, 72%) !important;
+  }
+
+  #page-chat .chat-workspace.in-session .composer,
+  .app.portal2-mode #page-chat .chat-workspace.in-session .composer,
+  .app.portal2-mode #portal2RightContent[data-portal2-route="chat"] #page-chat .composer {
+    width: var(--codex-chat-content-width) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  @media (max-width: 760px) {
+    #page-chat {
+      --codex-chat-content-width: calc(100vw - 32px);
+    }
+
+    #page-chat .codex-chat-tabbar {
+      grid-template-columns: auto minmax(0, 1fr) 40px !important;
+      gap: 8px !important;
+    }
+
+    #page-chat .codex-chat-tab {
+      min-width: 142px !important;
+    }
+  }
+</style>
+<script id="codex-chat-final-tab-scroll-20260803">
+(() => {
+  function scrollActiveChatTab(behavior = "smooth") {
+    return;
+  }
+
+  document.addEventListener("click", (event) => {
+    if (event.target.closest?.("#page-chat [data-codex-chat-tab], #page-chat [data-chat], #page-chat [data-chat-rail], #page-chat [data-portal2-recent-item]")) {
+      window.setTimeout(() => scrollActiveChatTab("smooth"), 80);
+      window.setTimeout(() => scrollActiveChatTab("smooth"), 220);
+    }
+  }, true);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => scrollActiveChatTab("auto"));
+  } else {
+    scrollActiveChatTab("auto");
+  }
+
+  new MutationObserver(() => {
+    window.clearTimeout(window.__codexChatFinalTabScrollTimer);
+    window.__codexChatFinalTabScrollTimer = window.setTimeout(() => scrollActiveChatTab("smooth"), 80);
+  }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "data-codex-chat-tab"] });
+})();
+</script>
+<style id="codex-chat-position-rollback-20260803">
+  #page-chat .message-list {
+    padding: 18px 12px 8px 0 !important;
+  }
+
+  #page-chat .message-list .chat-message,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list .chat-message {
+    width: auto !important;
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  #page-chat .message-list .chat-message.user,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list .chat-message.user {
+    padding-right: 0 !important;
+    justify-content: flex-end !important;
+  }
+
+  #page-chat .message-list .chat-message.assistant,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list .chat-message.assistant {
+    justify-content: flex-start !important;
+  }
+
+  #page-chat .message-list .chat-bubble {
+    max-width: min(760px, 72%) !important;
+  }
+
+  #page-chat .chat-workspace.in-session .composer,
+  .app.portal2-mode #page-chat .chat-workspace.in-session .composer,
+  .app.portal2-mode #portal2RightContent[data-portal2-route="chat"] #page-chat .composer {
+    width: min(1280px, 100%) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+</style>
+<style id="codex-chat-bubble-composer-track-20260803">
+  #page-chat {
+    --codex-chat-message-track: min(1280px, 100%);
+  }
+
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat {
+    --codex-chat-message-track: min(1280px, 100%);
+  }
+
+  #page-chat .codex-chat-tabbar {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    grid-template-columns: auto minmax(0, 1fr) 42px !important;
+  }
+
+  #page-chat .codex-chat-tabstrip {
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  #page-chat .message-list {
+    padding: 18px 12px 8px 0 !important;
+  }
+
+  #page-chat .message-list .chat-message,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list .chat-message {
+    width: var(--codex-chat-message-track) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  #page-chat .message-list .chat-message.user,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list .chat-message.user {
+    justify-content: flex-end !important;
+  }
+
+  #page-chat .message-list .chat-message.assistant,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list .chat-message.assistant {
+    justify-content: flex-start !important;
+  }
+
+  #page-chat .message-list .chat-bubble,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list .chat-bubble {
+    max-width: min(760px, 72%) !important;
+  }
+
+  #page-chat .chat-workspace.in-session .composer,
+  .app.portal2-mode #page-chat .chat-workspace.in-session .composer,
+  .app.portal2-mode #portal2RightContent[data-portal2-route="chat"] #page-chat .composer {
+    width: var(--codex-chat-message-track) !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  @media (max-width: 760px) {
+    #page-chat {
+      --codex-chat-message-track: calc(100vw - 32px);
+    }
+  }
+</style>
+<style id="codex-chat-stepper-right-20260803">
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .portal2-session-locator {
+    left: auto !important;
+    right: 5px !important;
+    top: 112px !important;
+    bottom: 322px !important;
+  }
+
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .portal2-session-locator::before {
+    left: auto !important;
+    right: 9px !important;
+  }
+
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .portal2-locator-item {
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .portal2-locator-mark {
+    transform-origin: center !important;
+  }
+
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .portal2-locator-tip {
+    left: auto !important;
+    right: 34px !important;
+    transform: translate(-4px, -50%) !important;
+  }
+
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .portal2-locator-item:hover .portal2-locator-tip {
+    transform: translate(0, -50%) !important;
+  }
+</style>
+<style id="codex-chat-browser-tabs-20260803">
+  #page-chat .codex-chat-tabbar {
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+  }
+
+  #page-chat .codex-chat-tabstrip {
+    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
+    overscroll-behavior-inline: contain;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 22px), transparent 100%) !important;
+    mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 22px), transparent 100%) !important;
+  }
+
+  #page-chat .codex-chat-tab {
+    flex: 0 0 210px !important;
+    min-width: 210px !important;
+    max-width: 210px !important;
+    scroll-snap-align: start;
+    cursor: grab !important;
+    user-select: none;
+  }
+
+  #page-chat .codex-chat-tab:active {
+    cursor: grabbing !important;
+  }
+
+  #page-chat .codex-chat-tab.codex-tab-dragging {
+    opacity: .58 !important;
+    transform: scale(.985) !important;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, .14) !important;
+  }
+
+  #page-chat .codex-chat-right-actions {
+    width: auto !important;
+    min-width: 96px !important;
+    gap: 8px !important;
+    justify-content: flex-end !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle],
+  #page-chat [data-codex-tabs-toggle][hidden] {
+    width: 44px !important;
+    min-width: 44px !important;
+    height: 40px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+    border: 1px solid rgba(47, 111, 236, .26) !important;
+    border-radius: 13px !important;
+    color: #2f6fec !important;
+    background: linear-gradient(180deg, rgba(47, 111, 236, .14), rgba(47, 111, 236, .07)) !important;
+    box-shadow: 0 6px 16px rgba(47, 111, 236, .10) !important;
+    font-size: 0 !important;
+    cursor: pointer !important;
+    position: relative !important;
+    gap: 0 !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle]::before {
+    content: "" !important;
+    width: 16px !important;
+    height: 12px !important;
+    border: 2px solid currentColor !important;
+    border-radius: 5px !important;
+    box-shadow: -5px 3px 0 -2px rgba(47, 111, 236, .30) !important;
+    transform: translateX(2px) !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle]::after {
+    content: "" !important;
+    width: 7px !important;
+    height: 7px !important;
+    border-left: 2px solid currentColor !important;
+    border-bottom: 2px solid currentColor !important;
+    border-radius: 1px !important;
+    margin-left: -2px !important;
+    transform: rotate(45deg) !important;
+  }
+
+  #page-chat .codex-chat-tabbar.tabs-collapsed [data-codex-tabs-toggle]::after {
+    transform: rotate(-135deg) !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle]:hover {
+    color: #fff !important;
+    border-color: rgba(47, 111, 236, .45) !important;
+    background: linear-gradient(180deg, rgba(47, 111, 236, .86), rgba(37, 99, 235, .76)) !important;
+    box-shadow: 0 10px 22px rgba(47, 111, 236, .20) !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle]:hover::before {
+    box-shadow: -5px 3px 0 -2px rgba(255, 255, 255, .38) !important;
+  }
+
+  #page-chat .codex-chat-tabbar.tabs-collapsed .codex-chat-tabstrip {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    opacity: 1 !important;
+    overflow: hidden !important;
+    padding: 0 2px !important;
+    pointer-events: auto !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+
+  #page-chat .codex-chat-tabbar.tabs-collapsed .codex-chat-tabstrip > :not(.active):not(.codex-chat-new) {
+    display: none !important;
+  }
+
+  #page-chat .codex-chat-tabbar.tabs-collapsed .codex-chat-tab.active {
+    flex: 0 1 220px !important;
+    min-width: 150px !important;
+    max-width: 220px !important;
+  }
+
+  #page-chat .codex-chat-tabbar.tabs-collapsed .codex-chat-tab.active .codex-chat-tab-state,
+  #page-chat .codex-chat-tabbar.tabs-collapsed .codex-chat-tab.active .codex-chat-tab-close {
+    display: none !important;
+  }
+
+  @media (max-width: 760px) {
+    #page-chat .codex-chat-tab {
+      flex-basis: 168px !important;
+      min-width: 168px !important;
+      max-width: 168px !important;
+    }
+
+    #page-chat .codex-chat-right-actions {
+      min-width: 92px !important;
+      gap: 6px !important;
+    }
+  }
+</style>
+<style id="codex-chat-active-tab-emphasis-20260803">
+  #page-chat .codex-chat-tab {
+    position: relative !important;
+    overflow: hidden !important;
+  }
+
+  #page-chat .codex-chat-tab.active {
+    color: #1d4ed8 !important;
+    border-color: rgba(47, 111, 236, .66) !important;
+    background: linear-gradient(180deg, rgba(235, 243, 255, .98), rgba(255, 255, 255, .96)) !important;
+    box-shadow:
+      inset 0 0 0 1px rgba(47, 111, 236, .22),
+      0 9px 22px rgba(47, 111, 236, .16) !important;
+  }
+
+  #page-chat .codex-chat-tab.active::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 12px !important;
+    right: 12px !important;
+    top: 0 !important;
+    height: 3px !important;
+    border-radius: 0 0 999px 999px !important;
+    background: linear-gradient(90deg, #2f6fec, rgba(47, 111, 236, .45)) !important;
+  }
+
+  #page-chat .codex-chat-tab.active .codex-chat-tab-title {
+    color: #1d4ed8 !important;
+    font-weight: 900 !important;
+  }
+
+  #page-chat .codex-chat-tab.active .codex-chat-tab-state {
+    color: rgba(29, 78, 216, .78) !important;
+  }
+
+  #page-chat .codex-chat-tab.active .codex-chat-tab-state::before {
+    background: #2f6fec !important;
+    box-shadow: 0 0 0 4px rgba(47, 111, 236, .16) !important;
+  }
+
+  #page-chat .codex-chat-tab.active .codex-chat-tab-close {
+    color: rgba(29, 78, 216, .62) !important;
+  }
+
+  #page-chat .codex-chat-tab.active .codex-chat-tab-close:hover {
+    color: #1d4ed8 !important;
+    background: rgba(47, 111, 236, .12) !important;
+  }
+</style>
+<style id="codex-chat-tabs-toggle-clean-20260803">
+  #page-chat [data-codex-tabs-toggle],
+  #page-chat [data-codex-tabs-toggle][hidden] {
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    border-radius: 12px !important;
+    border-color: rgba(47, 111, 236, .20) !important;
+    color: #2f6fec !important;
+    background: rgba(47, 111, 236, .08) !important;
+    box-shadow: 0 5px 14px rgba(47, 111, 236, .08) !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle]::before {
+    content: "" !important;
+    width: 13px !important;
+    height: 2px !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: currentColor !important;
+    box-shadow: none !important;
+    transform: translateX(2px) !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle]::after {
+    content: "" !important;
+    width: 8px !important;
+    height: 8px !important;
+    border: 0 !important;
+    border-left: 2px solid currentColor !important;
+    border-bottom: 2px solid currentColor !important;
+    border-radius: 1px !important;
+    margin-left: -3px !important;
+    transform: rotate(45deg) !important;
+  }
+
+  #page-chat .codex-chat-tabbar.tabs-collapsed [data-codex-tabs-toggle]::before {
+    transform: translateX(-2px) !important;
+  }
+
+  #page-chat .codex-chat-tabbar.tabs-collapsed [data-codex-tabs-toggle]::after {
+    margin-left: -11px !important;
+    margin-right: 4px !important;
+    transform: rotate(-135deg) !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle]:hover {
+    color: #fff !important;
+    border-color: rgba(47, 111, 236, .58) !important;
+    background: #2f6fec !important;
+    box-shadow: 0 10px 22px rgba(47, 111, 236, .22) !important;
+  }
+</style>
+<style id="codex-chat-active-tab-polish-20260803">
+  #page-chat .codex-chat-tab.active {
+    color: #1f4fd6 !important;
+    border-color: rgba(47, 111, 236, .44) !important;
+    background: linear-gradient(180deg, rgba(245, 249, 255, .98), rgba(255, 255, 255, .98)) !important;
+    box-shadow:
+      inset 0 0 0 1px rgba(47, 111, 236, .10),
+      0 8px 18px rgba(47, 111, 236, .12) !important;
+  }
+
+  #page-chat .codex-chat-tab.active::before {
+    left: 8px !important;
+    right: auto !important;
+    top: 50% !important;
+    width: 4px !important;
+    height: 18px !important;
+    border-radius: 999px !important;
+    background: #2f6fec !important;
+    transform: translateY(-50%) !important;
+  }
+
+  #page-chat .codex-chat-tab.active .codex-chat-tab-main {
+    padding-left: 8px !important;
+  }
+
+  #page-chat .codex-chat-tab.active .codex-chat-tab-title {
+    color: #1f4fd6 !important;
+    font-weight: 900 !important;
+  }
+
+  #page-chat .codex-chat-tab.active:hover {
+    border-color: rgba(47, 111, 236, .58) !important;
+    box-shadow:
+      inset 0 0 0 1px rgba(47, 111, 236, .14),
+      0 10px 22px rgba(47, 111, 236, .16) !important;
+  }
+</style>
+<style id="codex-chat-tabs-toggle-choice-20260803">
+  #page-chat [data-codex-tabs-toggle],
+  #page-chat [data-codex-tabs-toggle][hidden] {
+    width: 40px !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(47, 111, 236, .22) !important;
+    color: #2f6fec !important;
+    background: rgba(47, 111, 236, .08) !important;
+    box-shadow: 0 5px 14px rgba(47, 111, 236, .08) !important;
+    font-size: 0 !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle]::before {
+    content: "⇠" !important;
+    width: auto !important;
+    height: auto !important;
+    display: inline-block !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: currentColor !important;
+    font-size: 21px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    transform: translateY(-1px) !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle]::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  #page-chat .codex-chat-tabbar.tabs-collapsed [data-codex-tabs-toggle]::before {
+    content: "⇢" !important;
+    transform: translateY(-1px) !important;
+  }
+
+  #page-chat [data-codex-tabs-toggle]:hover {
+    color: #fff !important;
+    border-color: rgba(47, 111, 236, .58) !important;
+    background: #2f6fec !important;
+    box-shadow: 0 10px 22px rgba(47, 111, 236, .22) !important;
+  }
+</style>
+<style id="codex-chat-scroll-polish-20260803">
+  #page-chat .chat-session.open,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .chat-session.open {
+    overflow: visible !important;
+  }
+
+  #page-chat .message-list,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list {
+    width: calc(100% + 16px) !important;
+    margin-right: -16px !important;
+    padding-right: 28px !important;
+    box-sizing: border-box !important;
+    scrollbar-gutter: stable !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(120, 135, 160, .14) transparent !important;
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, .34) 0,
+      rgba(0, 0, 0, .72) 18px,
+      #000 48px,
+      #000 100%
+    ) !important;
+    mask-image: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, .34) 0,
+      rgba(0, 0, 0, .72) 18px,
+      #000 48px,
+      #000 100%
+    ) !important;
+  }
+
+  #page-chat .message-list:hover,
+  .app.portal2-mode #portal2RightContent.portal2-using-native > #page-chat .message-list:hover {
+    scrollbar-color: rgba(120, 135, 160, .24) transparent !important;
+  }
+
+  #page-chat .message-list::-webkit-scrollbar {
+    width: 6px !important;
+  }
+
+  #page-chat .message-list::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+
+  #page-chat .message-list::-webkit-scrollbar-thumb {
+    min-height: 44px !important;
+    border: 2px solid transparent !important;
+    border-radius: 999px !important;
+    background: rgba(120, 135, 160, .16) !important;
+    background-clip: content-box !important;
+  }
+
+  #page-chat .message-list:hover::-webkit-scrollbar-thumb {
+    background: rgba(120, 135, 160, .28) !important;
+    background-clip: content-box !important;
+  }
+
+  #page-chat .message-list::-webkit-scrollbar-corner {
+    background: transparent !important;
+  }
+</style>
+<style id="codex-history-and-plus-menu-20260803">
+  #historyDrawer .history-card {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    min-height: 48px !important;
+    padding: 10px 12px !important;
+  }
+
+  #historyDrawer .history-card-icon,
+  #historyDrawer .history-card > span:last-child,
+  #historyDrawer .history-status {
+    display: none !important;
+  }
+
+  #historyDrawer .history-card > span:not(.history-card-icon):not(.history-status) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 12px !important;
+    min-width: 0 !important;
+  }
+
+  #historyDrawer .history-card strong {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  #historyDrawer .history-group-title {
+    display: none !important;
+  }
+
+  #historyPanelTask .history-card[data-unread="true"] strong::after {
+    content: "" !important;
+    width: 7px !important;
+    height: 7px !important;
+    display: inline-block !important;
+    margin-left: 8px !important;
+    border-radius: 999px !important;
+    background: #ff3b30 !important;
+    box-shadow: 0 0 0 3px rgba(255, 59, 48, .12) !important;
+    vertical-align: 2px !important;
+  }
+
+  #historyDrawer .history-card small {
+    margin: 0 !important;
+    color: #8a96a8 !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+  }
+
+  #appSelectButton,
+  .assistant-mini-tool[data-assistant-action="abilities"] {
+    width: 38px !important;
+    min-width: 38px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+    font-size: 0 !important;
+    border-radius: 12px !important;
+  }
+
+  #appSelectButton::before,
+  .assistant-mini-tool[data-assistant-action="abilities"]::before {
+    content: "+" !important;
+    font-size: 22px !important;
+    line-height: 1 !important;
+    font-weight: 850 !important;
+  }
+
+  #appMenu .menu-option,
+  #assistantAppMenu .menu-option {
+    justify-content: flex-start !important;
+  }
+</style>
+<script id="codex-plus-skill-menu-20260803">
+(() => {
+  const skillItems = [
+    { icon: "采", name: "采购绩效智能问数", prompt: "请使用采购绩效智能问数，帮我分析当前采购指标、异常波动和可优化方向。" },
+    { icon: "图", name: "采购指标图表分析", prompt: "请使用采购指标图表分析，帮我把采购数据整理成图表并提炼关键结论。" },
+    { icon: "合", name: "合同关键条款提取", prompt: "请使用合同关键条款提取，帮我识别合同里的关键条款、风险点和待确认事项。" }
+  ];
+
+  function abilityKindLabel(kind) {
+    if (kind === "mcp") return "MCP";
+    if (kind === "workflow") return "工作流";
+    return "Skill";
+  }
+
+  function abilityItems() {
+    const fallback = [
+      { kind: "skill", icon: "问", name: "采购绩效智能问数", desc: "面向采购绩效、执行效率、节约率和供应商表现进行自然语言问数。" },
+      { kind: "skill", icon: "图", name: "采购指标图表分析", desc: "将采购金额、周期、供应商评分、履约状态等指标生成趋势图与分析摘要。" },
+      { kind: "skill", icon: "供", name: "供应商画像分析", desc: "融合资质、履约、价格、质量和风险信息，形成供应商画像。" },
+      { kind: "skill", icon: "合", name: "合同履约风险识别", desc: "识别合同到货、验收、付款、发票和归档环节的异常风险。" },
+      { kind: "skill", icon: "标", name: "招标文件条款抽取", desc: "从招标公告、资格要求和评审办法中抽取关键条款。" },
+      { kind: "skill", icon: "案", name: "采购方案结构化生成", desc: "根据采购需求、预算、物料范围和采购方式生成结构化采购方案初稿。" },
+      { kind: "mcp", icon: "主", name: "采购主数据服务", desc: "连接采购组织、采购方式、项目分类和业务基础字典。" },
+      { kind: "mcp", icon: "库", name: "供应商管理服务", desc: "连接供应商库、资质证照、准入状态和评价记录。" },
+      { kind: "workflow", icon: "流", name: "物料查询工作流", desc: "按名称、编码或分类查询物料并汇总审批状态。" }
+    ];
+    const catalog = typeof window.getPortal2SkillCatalog === "function" ? window.getPortal2SkillCatalog() : fallback;
+    return catalog.filter((item) => item?.name && ["skill", "mcp", "workflow"].includes(item.kind)).slice(0, 18);
+  }
+
+  function abilityPrompt(item) {
+    return `请调用「${item.name}」，${item.desc || "帮我处理当前业务问题并给出结论。"}`;
+  }
+
+  function escapeMenuHtml(value) {
+    return String(value || "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[char]));
+  }
+
+  function menuHtml(attr, footerAttr) {
+    const items = abilityItems();
+    return `
+      <div class="portal2-ability-menu-head">
+        <span>选择技能</span>
+        <small>Skill · MCP · 工作流</small>
+      </div>
+      <div class="portal2-ability-menu-list">
+        ${items.map((item) => `
+          <button class="menu-option portal2-ability-menu-option" type="button" ${attr}="${escapeMenuHtml(abilityPrompt(item))}" data-codex-skill-kind="${escapeMenuHtml(item.kind)}">
+            <span class="portal2-ability-menu-icon">${escapeMenuHtml(item.icon || item.name.slice(0, 1))}</span>
+            <span class="portal2-ability-menu-copy">
+              <strong>${escapeMenuHtml(item.name)}</strong>
+              <small>${escapeMenuHtml(item.desc || "可在当前对话中直接调用")}</small>
+            </span>
+            <span class="portal2-ability-kind">${escapeMenuHtml(abilityKindLabel(item.kind))}</span>
+          </button>
+        `).join("")}
+      </div>
+      <button class="menu-footer-action" type="button" ${footerAttr}>进入技能页管理更多 ›</button>
+    `;
+  }
+
+  function syncPlusSkillMenus() {
+    const chatButton = document.querySelector("#appSelectButton");
+    if (chatButton) {
+      chatButton.textContent = "+";
+      chatButton.setAttribute("title", "选择技能");
+      chatButton.setAttribute("aria-label", "选择技能");
+    }
+
+    const drawerButton = document.querySelector('.assistant-mini-tool[data-assistant-action="abilities"]');
+    if (drawerButton) {
+      drawerButton.textContent = "技能";
+      drawerButton.setAttribute("title", "选择技能");
+      drawerButton.setAttribute("aria-label", "选择技能");
+    }
+
+    const chatMenu = document.querySelector("#appMenu");
+    if (chatMenu && chatMenu.dataset.codexSkillMenu !== "portal2Ability") {
+      chatMenu.innerHTML = menuHtml("data-app-prompt", "data-open-skills");
+      chatMenu.dataset.codexSkillMenu = "portal2Ability";
+    }
+
+    const drawerMenu = document.querySelector("#assistantAppMenu");
+    if (drawerMenu && drawerMenu.dataset.codexSkillMenu !== "portal2Ability") {
+      drawerMenu.innerHTML = menuHtml("data-assistant-app-prompt", "data-assistant-open-skills");
+      drawerMenu.dataset.codexSkillMenu = "portal2Ability";
+    }
+  }
+
+  function fillInput(selector, text) {
+    const input = document.querySelector(selector);
+    if (!input) return;
+    input.value = text;
+    input.focus();
+    input.selectionStart = input.selectionEnd = input.value.length;
+  }
+
+  document.addEventListener("click", (event) => {
+    const chatSkill = event.target.closest?.("#appMenu [data-app-prompt]");
+    if (chatSkill) {
+      event.preventDefault();
+      event.stopPropagation();
+      fillInput("#prompt", chatSkill.dataset.appPrompt || "");
+      document.querySelector("#appMenu")?.classList.remove("open");
+      return;
+    }
+
+    const drawerSkill = event.target.closest?.("#assistantAppMenu [data-assistant-app-prompt]");
+    if (drawerSkill) {
+      event.preventDefault();
+      event.stopPropagation();
+      fillInput("#assistantInput", drawerSkill.dataset.assistantAppPrompt || "");
+      document.querySelector("#assistantAppMenu")?.classList.remove("open");
+      return;
+    }
+
+    if (event.target.closest?.("[data-open-skills], [data-assistant-open-skills]")) {
+      event.preventDefault();
+      event.stopPropagation();
+      document.querySelector("#appMenu")?.classList.remove("open");
+      document.querySelector("#assistantAppMenu")?.classList.remove("open");
+      if (typeof window.switchPage === "function") window.switchPage("skills");
+    }
+  }, true);
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", syncPlusSkillMenus);
+  else syncPlusSkillMenus();
+
+  new MutationObserver(() => {
+    window.clearTimeout(window.__codexPlusSkillMenuTimer);
+    window.__codexPlusSkillMenuTimer = window.setTimeout(syncPlusSkillMenus, 50);
+  }).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+<style id="codex-drawer-skill-button-final-20260803">
+  #assistantDrawer .assistant-mini-tool[data-assistant-action="abilities"] {
+    width: auto !important;
+    min-width: 54px !important;
+    height: 34px !important;
+    padding: 0 12px !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    border-radius: 12px !important;
+  }
+
+  #assistantDrawer .assistant-mini-tool[data-assistant-action="abilities"]::before {
+    content: none !important;
+    display: none !important;
+  }
+</style>
+<style id="codex-drawer-ability-menu-match-20260803">
+  #assistantAppMenu.assistant-selector-menu.app,
+  #page-chat #appMenu.selector-menu.app-menu {
+    left: auto !important;
+    right: 0 !important;
+    bottom: 40px !important;
+    width: min(608px, calc(100vw - 40px)) !important;
+    max-height: min(520px, calc(100vh - 120px)) !important;
+    padding: 12px !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(211, 222, 239, .96) !important;
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, .97) !important;
+    box-shadow: 0 18px 44px rgba(23, 36, 62, .18) !important;
+    backdrop-filter: blur(12px) !important;
+  }
+
+  #assistantAppMenu.assistant-selector-menu.app.open,
+  #page-chat #appMenu.selector-menu.app-menu.open {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-head,
+  #page-chat #appMenu .portal2-ability-menu-head {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    padding: 0 2px 12px !important;
+    margin: 0 0 10px !important;
+    border-bottom: 1px solid rgba(226, 232, 240, .9) !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-head span,
+  #page-chat #appMenu .portal2-ability-menu-head span {
+    color: #172033 !important;
+    font-size: 18px !important;
+    font-weight: 850 !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-head small,
+  #page-chat #appMenu .portal2-ability-menu-head small {
+    color: #8a96a8 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-list,
+  #page-chat #appMenu .portal2-ability-menu-list {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    max-height: 360px !important;
+    overflow-y: auto !important;
+    padding-right: 4px !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: rgba(120, 135, 160, .24) transparent !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-list::-webkit-scrollbar,
+  #page-chat #appMenu .portal2-ability-menu-list::-webkit-scrollbar {
+    width: 6px !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-list::-webkit-scrollbar-thumb,
+  #page-chat #appMenu .portal2-ability-menu-list::-webkit-scrollbar-thumb {
+    border-radius: 999px !important;
+    background: rgba(120, 135, 160, .24) !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-option,
+  #page-chat #appMenu .portal2-ability-menu-option {
+    width: 100% !important;
+    min-height: 66px !important;
+    height: auto !important;
+    display: grid !important;
+    grid-template-columns: 48px minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 14px !important;
+    padding: 9px 10px !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+    background: transparent !important;
+    text-align: left !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-option:hover,
+  #page-chat #appMenu .portal2-ability-menu-option:hover {
+    background: rgba(47, 111, 236, .06) !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-icon,
+  #page-chat #appMenu .portal2-ability-menu-icon {
+    width: 48px !important;
+    height: 48px !important;
+    display: grid !important;
+    place-items: center !important;
+    border: 1px solid rgba(190, 211, 246, .85) !important;
+    border-radius: 12px !important;
+    color: #2f6fec !important;
+    background: #eef5ff !important;
+    font-size: 20px !important;
+    font-weight: 900 !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-copy,
+  #page-chat #appMenu .portal2-ability-menu-copy {
+    min-width: 0 !important;
+    display: block !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-copy strong,
+  #page-chat #appMenu .portal2-ability-menu-copy strong {
+    display: block !important;
+    overflow: hidden !important;
+    color: #172033 !important;
+    font-size: 16px !important;
+    font-weight: 850 !important;
+    line-height: 1.3 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-copy small,
+  #page-chat #appMenu .portal2-ability-menu-copy small {
+    display: block !important;
+    margin-top: 5px !important;
+    overflow: hidden !important;
+    color: #8a96a8 !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  #assistantAppMenu .portal2-ability-kind,
+  #page-chat #appMenu .portal2-ability-kind {
+    min-width: 66px !important;
+    height: 30px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 12px !important;
+    border-radius: 9px !important;
+    color: #5f6f86 !important;
+    background: #f1f4f9 !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+  }
+
+  #assistantAppMenu .menu-footer-action,
+  #page-chat #appMenu .menu-footer-action {
+    flex: 0 0 auto !important;
+    height: 62px !important;
+    margin: 10px -12px -12px !important;
+    border-radius: 0 0 18px 18px !important;
+    color: #2f6fec !important;
+    background: #f3f7ff !important;
+    font-size: 16px !important;
+    font-weight: 850 !important;
+  }
+</style>
+<script id="codex-employee-hover-desc-only-20260803">
+(() => {
+  const employeeHoverDesc = {
+    "采购数字员工": "面向采购全流程问答、寻源协同和供应商管理，适合快速处理采购日常咨询。",
+    "物流运营数字员工": "聚焦库存、物流跟踪和计划排产，帮助保障供应链高效运行。",
+    "合同数字员工": "辅助合同审查、履约跟踪和风险预警，适合合同管理场景。",
+    "供应商管理数字员工": "支持资质核验、绩效评估和风险识别，优化供应商合作。",
+    "数据分析数字员工": "面向数据报表、趋势分析和价格分析，为采购决策提供依据。"
+  };
+
+  function text(node) {
+    return (node?.textContent || "").replace(/\s+/g, " ").trim();
+  }
+
+  function escapeHtml(value) {
+    return String(value || "").replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    }[char]));
+  }
+
+  function place(tip, event) {
+    const pad = 14;
+    const width = tip.offsetWidth || 318;
+    const height = tip.offsetHeight || 150;
+    let left = event.clientX + 18;
+    let top = event.clientY + 12;
+    if (left + width + pad > window.innerWidth) left = event.clientX - width - 18;
+    if (top + height + pad > window.innerHeight) top = window.innerHeight - height - pad;
+    tip.style.left = `${Math.max(pad, left)}px`;
+    tip.style.top = `${Math.max(pad, top)}px`;
+  }
+
+  function showEmployeeTip(card, event) {
+    const title = text(card.querySelector("strong"));
+    const desc = employeeHoverDesc[title];
+    if (!desc) return false;
+    let tip = document.querySelector("#p2HoverTip");
+    if (!tip) {
+      tip = document.createElement("div");
+      tip.id = "p2HoverTip";
+      tip.className = "p2-hover-tip";
+      document.body.appendChild(tip);
+    }
+    const tags = Array.from(card.querySelectorAll(".portal2-tag-row span")).map(text).filter(Boolean).slice(0, 5);
+    tip.innerHTML = `<strong>${escapeHtml(title)}</strong><p>${escapeHtml(desc)}</p><div class="tags">${tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>`;
+    place(tip, event);
+    tip.classList.add("show");
+    return true;
+  }
+
+  document.addEventListener("pointerover", (event) => {
+    const card = event.target.closest?.("#page-portal2 #portal2EmployeeCards > .portal2-employee-card");
+    if (!card) return;
+    if (showEmployeeTip(card, event)) {
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    }
+  }, true);
+})();
+</script>
+<style id="codex-drawer-skill-menu-compact-20260803">
+  #assistantDrawer .assistant-mini-tool[data-assistant-action="abilities"] {
+    font-weight: 500 !important;
+  }
+
+  #assistantAppMenu.assistant-selector-menu.app {
+    left: auto !important;
+    right: 0 !important;
+    bottom: 40px !important;
+    width: min(390px, calc(100vw - 56px)) !important;
+    max-height: min(360px, calc(100vh - 120px)) !important;
+    padding: 8px !important;
+    overflow: hidden !important;
+    border-radius: 14px !important;
+  }
+
+  #assistantAppMenu.assistant-selector-menu.app.open {
+    display: block !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-head {
+    align-items: baseline !important;
+    gap: 12px !important;
+    padding: 6px 7px 9px !important;
+    margin: 0 !important;
+    border-bottom: 1px solid #edf1f6 !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-head span {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-head small {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-list {
+    display: grid !important;
+    gap: 2px !important;
+    max-height: clamp(148px, calc(28vh - 48px), 270px) !important;
+    margin: 5px 0 !important;
+    padding-right: 2px !important;
+    overflow-y: auto !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-option {
+    grid-template-columns: 30px minmax(0, 1fr) auto !important;
+    gap: 9px !important;
+    min-height: 52px !important;
+    padding: 7px 8px !important;
+    border-radius: 7px !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-icon {
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 7px !important;
+    font-size: 13px !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-copy strong {
+    font-size: 13px !important;
+    font-weight: 750 !important;
+  }
+
+  #assistantAppMenu .portal2-ability-menu-copy small {
+    margin-top: 3px !important;
+    font-size: 11px !important;
+  }
+
+  #assistantAppMenu .portal2-ability-kind {
+    min-width: 42px !important;
+    height: auto !important;
+    padding: 3px 6px !important;
+    border-radius: 5px !important;
+    font-size: 10px !important;
+    font-weight: 750 !important;
+  }
+
+  #assistantAppMenu .menu-footer-action {
+    height: 38px !important;
+    margin: 3px -8px -8px !important;
+    border-top: 1px solid #edf1f6 !important;
+    border-radius: 0 0 14px 14px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+  }
+</style>
 </body>
 </html>
+
