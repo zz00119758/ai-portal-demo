@@ -13946,7 +13946,7 @@
                   <button class="portal2-tool portal2-upload-tool" type="button" data-action="上传附件">附件</button>
                   <span class="portal2-skill-picker">
                     <button class="portal2-tool portal2-new-chat-tool portal2-skill-trigger" type="button" data-portal2-menu-trigger="skills" aria-label="选择技能" title="选择技能">
-                      <span aria-hidden="true">＋</span>
+                      <span aria-hidden="true">技能</span>
                     </button>
                     <div class="selector-menu portal2-selector-menu portal2-skill-menu" data-portal2-menu="skills">
                       <div class="menu-title">选择技能</div>
@@ -19422,7 +19422,7 @@
       return `
         <span class="portal2-skill-picker">
           <button class="selector-pill portal2-new-chat-tool portal2-skill-trigger" type="button" data-portal2-menu-trigger="skills" aria-label="选择技能" title="选择技能">
-            <span aria-hidden="true">+</span>
+            <span aria-hidden="true">技能</span>
           </button>
           <div class="selector-menu portal2-selector-menu portal2-skill-menu" data-portal2-menu="skills">
             ${portal2AbilityMenuContentHtml()}
@@ -25270,11 +25270,12 @@
     }
 
     #page-portal2 .portal2-skill-trigger {
-      width: 36px;
-      min-width: 36px;
-      padding: 0;
+      width: auto;
+      min-width: 64px;
+      padding: 0 14px;
       justify-content: center;
-      font-size: 20px;
+      font-size: 15px;
+      font-weight: 600;
       line-height: 1;
     }
 
@@ -36807,9 +36808,9 @@
       <div class="codex-chat-todos-head" data-codex-todos-toggle>
         <span class="codex-chat-todos-title">
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11"/><path d="M9 12h11"/><path d="M9 18h11"/><path d="m4 6 1 1 2-2"/><path d="m4 12 1 1 2-2"/><circle cx="5" cy="18" r="1.5"/></svg>
-          <span>To-dos</span>
+          <span>待办事项</span>
         </span>
-        <button class="codex-chat-todos-toggle" type="button" aria-label="收起或展开 To-dos">
+        <button class="codex-chat-todos-toggle" type="button" aria-label="收起或展开待办事项">
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </button>
       </div>
@@ -36829,7 +36830,7 @@
       if (!workspace || workspace.querySelector(".codex-chat-todos")) return;
       const panel = document.createElement("section");
       panel.className = "codex-chat-todos";
-      panel.setAttribute("aria-label", "To-dos");
+      panel.setAttribute("aria-label", "待办事项");
       panel.innerHTML = todosHtml();
       form.insertAdjacentElement("beforebegin", panel);
     });
@@ -36927,14 +36928,14 @@
   function buildTodos() {
     const panel = document.createElement("section");
     panel.className = "codex-chat-todos is-collapsed";
-    panel.setAttribute("aria-label", "To-dos");
+    panel.setAttribute("aria-label", "待办事项");
     panel.innerHTML = `
       <div class="codex-chat-todos-head" data-codex-todos-toggle>
         <span class="codex-chat-todos-title">
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11"/><path d="M9 12h11"/><path d="M9 18h11"/><path d="m4 6 1 1 2-2"/><path d="m4 12 1 1 2-2"/><circle cx="5" cy="18" r="1.5"/></svg>
-          <span>To-dos</span>
+          <span>待办事项</span>
         </span>
-        <button class="codex-chat-todos-toggle" type="button" aria-label="收起或展开 To-dos">
+        <button class="codex-chat-todos-toggle" type="button" aria-label="收起或展开待办事项">
           <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </button>
       </div>
@@ -39837,14 +39838,7 @@
 </style>
 <script id="codex-skill-card-actions-permission-20260806">
 (function(){
-  const lockedSkills = new Set([
-    "供应商画像分析",
-    "合同履约风险识别",
-    "付款节点提醒工作流",
-    "供应商管理服务",
-    "合同归档工作流",
-    "供应商准入工作流"
-  ]);
+  const lockedSkills = new Set();
 
   function skillNameFromCard(card) {
     return card?.querySelector(".skill-card-title > span:first-child")?.textContent?.trim()
@@ -40055,6 +40049,105 @@
     window.clearTimeout(window.__codexCollapsePolishTimer);
     window.__codexCollapsePolishTimer = window.setTimeout(syncCollapseToggle, 60);
   }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class"] });
+})();
+</script>
+<style id="codex-final-prototype-adjustments-20260807">
+  /* 1. 输入框技能入口去掉；2. NEW/上新 使用醒目的暖色系 */
+  #page-portal2 .portal2-skill-picker,
+  #portal2RightContent .portal2-skill-picker,
+  #page-chat .portal2-skill-picker,
+  #chatForm .portal2-skill-picker,
+  .composer .portal2-skill-picker,
+  .assistant-input-main .portal2-skill-picker {
+    display: none !important;
+  }
+
+  #page-portal2 .portal2-skill-trigger,
+  #portal2RightContent .portal2-skill-trigger {
+    display: none !important;
+  }
+
+  #page-portal2 .portal2-new-badge,
+  #portal2RightContent .portal2-new-badge,
+  .app.portal2-mode .portal2-new-badge,
+  .app.portal2-mode .portal2-new-corner,
+  .portal2-new-badge,
+  .portal2-new-corner,
+  .new-badge,
+  .new-tag,
+  .tag-new,
+  .badge-new,
+  [class*="new-badge"],
+  [class*="new-corner"] {
+    color: #b42318 !important;
+    background: linear-gradient(135deg, #fff2b8 0%, #ffd166 100%) !important;
+    border: 1px solid rgba(244, 180, 0, .42) !important;
+    box-shadow: 0 8px 18px rgba(245, 158, 11, .18) !important;
+  }
+
+  /* 4. 技能页面撤掉无权限锁和申请态，只保留普通选择动作 */
+  #page-skills .skill-service-card.codex-skill-locked {
+    border-color: #e6edf7 !important;
+  }
+
+  #page-skills .skill-service-card.codex-skill-locked::after,
+  #codexSkillPermissionLayer {
+    display: none !important;
+  }
+
+  #page-skills .skill-service-card .skill-card-title {
+    padding-right: 44px !important;
+  }
+
+  #page-skills .skill-service-card .codex-skill-card-action {
+    display: none !important;
+  }
+
+  #page-skills .skill-service-card .codex-skill-card-action::before {
+    content: none !important;
+  }
+</style>
+<script id="codex-final-prototype-adjustments-20260807">
+(function(){
+  function normalizePrototype(root = document) {
+    root.querySelectorAll?.("#page-portal2 .portal2-skill-picker, #portal2RightContent .portal2-skill-picker, #page-chat .portal2-skill-picker, #chatForm .portal2-skill-picker, .composer .portal2-skill-picker, .assistant-input-main .portal2-skill-picker").forEach((picker) => {
+      picker.remove();
+    });
+
+    root.querySelectorAll?.("#page-portal2 .portal2-skill-trigger, #portal2RightContent .portal2-skill-trigger").forEach((button) => {
+      button.remove();
+    });
+
+    root.querySelectorAll?.(".codex-chat-todos").forEach((panel) => {
+      panel.setAttribute("aria-label", "待办事项");
+      panel.querySelectorAll(".codex-chat-todos-title span").forEach((span) => {
+        span.textContent = "待办事项";
+      });
+      panel.querySelectorAll(".codex-chat-todos-toggle").forEach((button) => {
+        button.setAttribute("aria-label", "收起或展开待办事项");
+        button.title = "收起或展开待办事项";
+      });
+    });
+
+    root.querySelectorAll?.("#page-skills .skill-service-card").forEach((card) => {
+      card.classList.remove("codex-skill-locked");
+      card.removeAttribute("aria-disabled");
+      card.querySelector(":scope > .codex-skill-card-action")?.remove();
+    });
+
+    document.querySelector("#codexSkillPermissionLayer")?.remove();
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => normalizePrototype());
+  else normalizePrototype();
+
+  new MutationObserver((records) => {
+    window.clearTimeout(window.__codexFinalPrototypeAdjustmentsTimer);
+    window.__codexFinalPrototypeAdjustmentsTimer = window.setTimeout(() => {
+      records.forEach((record) => normalizePrototype(record.target || document));
+      normalizePrototype();
+    }, 50);
+  }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "aria-label", "title"] });
 })();
 </script>
 </body>
